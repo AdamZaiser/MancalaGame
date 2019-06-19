@@ -15,7 +15,7 @@ public class GameMenu{
     public GameMenu(Game game){
         frame = new JFrame("Mancala");
         frame.getContentPane().getInsets().set(0, 0, 0, 0);
-        //game.setMenu(this);
+        game.setMenu(this);
         frame.setSize(new Dimension(1075, 400));
         this.game = game;
         buttonGrid = new MancalaButton[14];
@@ -125,4 +125,24 @@ public class GameMenu{
         gameState.setText(s);
     }
 
+    public void updateButtons(int player, int[] board)
+    {
+        if (player == 1)
+        {
+            for(int i = 13; i >= 8; i--)
+                buttonGrid[i].setEnabled(false);
+            for (int i = 1; i <=6; i++)
+                buttonGrid[i].setEnabled(board[i]>0);
+        }        
+        else
+        {
+            for(int i = 13; i >= 8; i--)
+                buttonGrid[i].setEnabled(board[i]>0);
+            for (int i = 1; i <=6; i++)
+                buttonGrid[i].setEnabled(false);
+        }
+        
+        for (int i = 0; i < board.length; i++)
+            buttonGrid[i].setText("" + board[i]);
+    }
 }
