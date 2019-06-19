@@ -73,6 +73,11 @@ public class GameMenu{
                     }
                 });
             pitGrid.add(buttonGrid[i]);
+            buttonGrid[i].setUI(new MetalButtonUI() {
+                    protected Color getDisabledTextColor() {
+                        return Color.BLACK;
+                    }
+                });
 
         }
         buttonGrid[7] = new MancalaButton("7", 7);
@@ -100,6 +105,12 @@ public class GameMenu{
                         game.processButton(((MancalaButton)(e.getSource())).getIndex());
                     }
                 });
+            buttonGrid[i].setUI(new MetalButtonUI() {
+                    protected Color getDisabledTextColor() {
+                        return Color.BLACK;
+                    }
+                });
+
         }
 
         gameState = new JLabel("THIS IS THE STATUS OF THE GAME",
@@ -141,7 +152,7 @@ public class GameMenu{
             for (int i = 1; i <=6; i++)
                 buttonGrid[i].setEnabled(false);
         }
-        
+
         for (int i = 0; i < board.length; i++)
             buttonGrid[i].setText("" + board[i]);
     }
