@@ -34,7 +34,7 @@ public class Game
 
     public int determineWinner()
     {
-        if (gameIsOver())
+        if (gameIsOver()) //and playervsplayer is true
         {
             if (stonesGoal1 > stonesGoal2)
             { 
@@ -45,6 +45,23 @@ public class Game
             else if (stonesGoal2> stonesGoal1)
             {
                 System.out.println ("Player 2 wins!");
+                return 2; 
+            }
+            else
+                System.out.println("It�s a tie!");
+        }
+        
+        if (gameIsOver()) //and playervsAI is true
+        {
+            if (stonesGoal1 > stonesGoal2)
+            { 
+                System.out.println("Player 1 wins!");
+                return 1;
+            }
+
+            else if (stonesGoal2> stonesGoal1)
+            {
+                System.out.println ("The CPU wins!");
                 return 2; 
             }
             else
