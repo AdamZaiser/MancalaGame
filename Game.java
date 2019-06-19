@@ -32,8 +32,9 @@ public class Game
 
     public void processButton(int index)
     {
-        System.out.println(index);
+        System.out.println(index); 
     }
+
     //returns false when turn is over
     public boolean takeTurn(int firstPile)
     {   
