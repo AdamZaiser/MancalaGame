@@ -1,8 +1,10 @@
-package Players;
+ 
 
-public class RandomPlayer extends Player{
+public class RandomPlayer extends Player
+{
     
-    public int getMove(){
+    public int getMove()
+    {
         return 0;
     }
 }

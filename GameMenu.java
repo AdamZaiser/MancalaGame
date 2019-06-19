@@ -1,73 +1,128 @@
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.image.ImageObserver;
-import java.awt.FlowLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalButtonUI;
+import java.awt.event.*;
 //import com.sun.org.glassfish.gmbal.ManagedAttribute;
 
-import javax.swing.Box;
-import javax.swing.JComponent;
-
 public class GameMenu{
-
     private JFrame frame;
     private Game game;
+    private JPanel mainPanel, mancalaPanel, playerOneGoal, 
+    playerTwoGoal, pitGrid;
+    private MancalaButton[] buttonGrid;
 
+    private JLabel gameState;
     public GameMenu(Game game){
         frame = new JFrame("Mancala");
         frame.getContentPane().getInsets().set(0, 0, 0, 0);
-        frame.setSize(new Dimension(1600, 900));
+        //game.setMenu(this);
+        frame.setSize(new Dimension(1075, 400));
         this.game = game;
-      
-        JPanel mainPanel = new JPanel(); //CONTAINS BOTH PANELS WITH NULL LAYOUT
+        buttonGrid = new MancalaButton[14];
+
+        mainPanel = new JPanel(); //CONTAINS BOTH PANELS WITH NULL LAYOUT
         mainPanel.setLayout(null);
-        
-        JPanel mancalaPanel = new JPanel()/*{
-            @Override
-            public void paint(Graphics g){
-                //g.setColor(new Color(199, 219, 226));
-                //g.fillRect(300, 200, 1000, 500);
-            }
-        }*/;
+
+        mancalaPanel = new JPanel();
         mancalaPanel.setBackground(new Color(199, 219, 226));
-        //mancalaPanel.setSize(1000, 500);
-        mancalaPanel.setBounds(300, 200, 1000, 500);
+        mancalaPanel.setBounds(25, 25, 1000, 300);
         mancalaPanel.setLayout(null);
         mancalaPanel.setOpaque(true);
         mancalaPanel.repaint();
-        
-        JPanel playerTwoGoal = new JPanel()/*{
-            @Override
-            public void paint(Graphics g){
-                g.setColor(new Color(198, 25, 25));
-                g.fillRect(0, 0, 100, 250);
-            }
-        }*/;
-        playerTwoGoal.setBackground(new Color(198, 25, 25));
-        playerTwoGoal.setBounds(0, 0, 100, 250);
+
+        playerOneGoal = new JPanel();
+        playerOneGoal.setLayout(null);
+        playerOneGoal.setBackground(new Color(198, 80, 80));
+        playerOneGoal.setBounds(900, 0, 100, 300);
+        playerOneGoal.setOpaque(true);
+        playerOneGoal.repaint();
+        playerTwoGoal = new JPanel();
+        playerTwoGoal.setLayout(null);
+        playerTwoGoal.setBackground(new Color(198, 80, 80));
+        playerTwoGoal.setBounds(0, 0, 100, 300);
         playerTwoGoal.setOpaque(true);
         playerTwoGoal.repaint();
-        
-        mainPanel.add(mancalaPanel);
+
+        pitGrid = new JPanel();
+        pitGrid.setBounds(100, 0, 800, 300);
+        pitGrid.setBackground(Color.BLACK);
+        pitGrid.setOpaque(true);
+        pitGrid.setLayout(new GridLayout(2, 6));
+        buttonGrid[0] = new MancalaButton("0", 0);
+        buttonGrid[0].setFont(new Font("Arial", Font.PLAIN, 35));
+        buttonGrid[0].setBackground(new Color(198, 70, 70));
+        playerTwoGoal.add(buttonGrid[0], SwingConstants.CENTER);
+        buttonGrid[0].setEnabled(false);
+        buttonGrid[0].setBounds(5, 100, 90, 90);
+        buttonGrid[0].setUI(new MetalButtonUI() {
+                protected Color getDisabledTextColor() {
+                    return Color.BLACK;
+                }
+            });
+
+        for(int i = 13; i >=8; i--)
+        {
+            buttonGrid[i] = new MancalaButton("" + i, i);
+            buttonGrid[i].setFont(new Font("Arial", Font.PLAIN, 40));
+            buttonGrid[i].setBackground(new Color(150, 150, 250));
+            buttonGrid[i].setFocusPainted(false);
+            buttonGrid[i].addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        game.processButton(((MancalaButton)(e.getSource())).getIndex());
+                    }
+                });
+            pitGrid.add(buttonGrid[i]);
+
+        }
+        buttonGrid[7] = new MancalaButton("7", 7);
+        buttonGrid[7].setFont(new Font("Arial", Font.PLAIN, 35));
+        buttonGrid[7].setBackground(new Color(198, 70, 70));
+        buttonGrid[7].setEnabled(false);
+        buttonGrid[7].setBounds(5, 100, 90, 90);
+        buttonGrid[7].setUI(new MetalButtonUI() {
+                protected Color getDisabledTextColor() {
+                    return Color.BLACK;
+                }
+            });
+
+        playerOneGoal.add(buttonGrid[7], SwingConstants.CENTER);
+        for(int i = 1; i <=6; i++)
+        {
+            buttonGrid[i] = new MancalaButton("" + i, i);
+            buttonGrid[i].setFont(new Font("Arial", Font.PLAIN, 40));
+            buttonGrid[i].setBackground(new Color(150, 150, 250));
+            buttonGrid[i].setFocusPainted(false);
+            pitGrid.add(buttonGrid[i]);
+            buttonGrid[i].addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        game.processButton(((MancalaButton)(e.getSource())).getIndex());
+                    }
+                });
+        }
+
+        gameState = new JLabel("THIS IS THE STATUS OF THE GAME",
+            SwingConstants.CENTER);
+        gameState.setFont(new Font("Arial", Font.PLAIN, 20));
+        gameState.setBackground(Color.WHITE);
+        gameState.setBounds(25, 325, 1000, 25);
+
         //mainPanel.add(playerTwoGoal); //ALTERNATLEY COMMENT THIS OUT
         mancalaPanel.add(playerTwoGoal); //AND UNCOMMENT THIS AND SEE
-                                        //CHANGE IN BEHAVIOR
-        
-        
+        mancalaPanel.add(playerOneGoal); //CHANGE IN BEHAVIOR
+        mancalaPanel.add(pitGrid);
+        mainPanel.add(gameState);
+        mainPanel.add(mancalaPanel);
         frame.add(mainPanel);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
+
+    public void setGameText(String s)
+    {
+        gameState.setText(s);
+    }
+
 }

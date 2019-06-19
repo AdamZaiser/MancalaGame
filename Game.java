@@ -1,3 +1,4 @@
+
 public class Game
 {
     private Player one, two;
@@ -8,13 +9,13 @@ public class Game
     private int numStones, stonesGoal1, stonesGoal2;
     private Integer[] board = new Integer[14];
 
-    public Game(Player one, Player two)
+    public Game(Player p1, Player p2)
     {
-        this.one = one;
-        this.two = two;
+        this.one = p1;
+        this.two = p2;
         this.currentPlayer = one; 
     }
-    
+
     //"greys out" invalid first piles choices"
     public void possibleMoves()
     {
@@ -25,10 +26,14 @@ public class Game
         }
         else 
         {
-            //grey out two gaols and spaces 1 - 6
+            //grey out two goals and spaces 1 - 6
         }
     }
-    
+
+    public void processButton(int index)
+    {
+        System.out.println(index);
+    }
     //returns false when turn is over
     public boolean takeTurn(int firstPile)
     {   
@@ -54,7 +59,7 @@ public class Game
                 lastIndex = i + 1; 
             }
         } 
-        
+
         if (lastIndex == myGoal) //if we ended up in myGoal
         {
             takeTurn(lastIndex);
@@ -74,7 +79,8 @@ public class Game
         }
         else 
         {
-            takeTurn(lastIndex); 
+            //takeTurn(lastIndex); 
+            takeTurn(firstPile);
         }
         return false; 
     }
@@ -99,7 +105,7 @@ public class Game
     public boolean gameIsOver()
     {
         int eachSpace, sumOfSpaces = 0;
-
+        //adds total number of stones in all small spaces (not goals)
         for (int i = 0; i < board.length; i++)
         {
             if (!((i == goal1) || (i == goal2)))
@@ -108,10 +114,10 @@ public class Game
                 sumOfSpaces += eachSpace;
             }
         }
-
+        //game is over if there are no stones left on board not in goals
         if ((sumOfSpaces == 0) 
-        || (stonesGoal1 > sumOfSpaces + stonesGoal2)
-        || (stonesGoal2 > sumOfSpaces + stonesGoal1))
+        || (stonesGoal1 > sumOfSpaces + stonesGoal2) //clear winner
+        || (stonesGoal2 > sumOfSpaces + stonesGoal1)) //clear winner
             return true;
 
         return false;
