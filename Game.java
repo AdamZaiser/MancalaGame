@@ -2,8 +2,8 @@
 public class Game
 {
     private Player one, two;
-    private final int goal1 = 0; 
-    private final int goal2 = 7; 
+    private int goal1 = 0; 
+    private int goal2 = 7; 
     private boolean donePlaying; 
     private int currentPlayer; 
     private int numStones, stonesGoal1, stonesGoal2;
@@ -15,39 +15,26 @@ public class Game
         board = new int[14];
         board[0] = 0;
         board[7] = 0;
-      
+
         for (int i = 1; i < 7; i++)
             board[i] = 4;
         for (int i = 8; i < 14; i++)
             board[i] = 4;
-        board[2] = 0;    
+
         this.one = p1;
         this.two = p2;
         this.currentPlayer = 1; 
     }
+
     public void setMenu(GameMenu m)
     {
         menu = m;
-    }
-    
-    //"greys out" invalid first piles choices"
-    public void possibleMoves()
-    {
-        //grey out any empty spaces
-        if (currentPlayer == 1)
-        {
-            //grey out two goals and spaces 8 - 13
-        }
-        else 
-        {
-            //grey out two goals and spaces 1 - 6
-        }
     }
 
     public void processButton(int index)
     {
         System.out.println(index); 
-        
+        takeTurn(index);
         menu.updateButtons(currentPlayer, board);
     }
 
@@ -56,6 +43,7 @@ public class Game
     {   
         int notMyGoal, myGoal = -1; 
         int stonesInFirstPile = board[firstPile];
+
         if (currentPlayer == 1)
         {
             myGoal = goal1; 
@@ -67,40 +55,43 @@ public class Game
             notMyGoal = goal1; 
         }
 
-        int lastIndex = 0; 
+        int lastSpace = 0; 
         for (int i = firstPile; i <= stonesInFirstPile; i++)
         {
             if (i != notMyGoal)
             {
                 board[i + 1]++;
                 //System.out.println(board[i+1]);
-                lastIndex = i + 1; 
+                lastSpace = i + 1; 
+                stonesInFirstPile--;
             }
         } 
-        //steal();
-        if (lastIndex == myGoal) //if we ended up in myGoal
+
+        if (lastSpace == myGoal) //if we ended up in myGoal
         {
-            takeTurn(lastIndex);
+            takeTurn(lastSpace);
         }
 
-        if (board[lastIndex] == 1) //return false and change player
+        if (board[lastSpace] == 1) //return false and change player
         {
             if (currentPlayer == 1)
             {
-                //goal1 += 1+ board[goal across]
+                goal1 += (1 + board[14-lastSpace]);
                 currentPlayer = 1; 
             }
             else
             {
-                //goal2 += 1 + board[goal across]
+                goal2 += (1 + board[14-lastSpace]);
                 currentPlayer = 1; 
             }
             return false; 
         }
         else 
         {
-            //takeTurn(lastIndex); 
-            takeTurn(firstPile);
+            if (currentPlayer == 1)
+                menu.updateButtons(1, board);
+            else
+                menu.updateButtons(2, board);
         }
         return false; 
     }
