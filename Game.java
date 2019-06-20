@@ -39,10 +39,10 @@ public class Game
     }
 
     //returns false when turn is over
-    public boolean takeTurn(int firstPile)
+    public boolean takeTurn(int firstSpace)
     {   
         int notMyGoal, myGoal = -1; 
-        int stonesInFirstPile = board[firstPile];
+        int stonesInFirstPile = board[firstSpace];
 
         if (currentPlayer == 1)
         {
@@ -56,7 +56,7 @@ public class Game
         }
 
         int lastSpace = 0; 
-        for (int i = firstPile; i <= stonesInFirstPile; i++)
+        for (int i = firstSpace; i <= stonesInFirstPile; i++)
         {
             if (i != notMyGoal)
             {
