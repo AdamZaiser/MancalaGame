@@ -77,7 +77,7 @@ public class Game
             if (currentPlayer == 1)
             {
                 goal1 += (1 + board[14-lastSpace]);
-                currentPlayer = 1; 
+                currentPlayer = 2; 
             }
             else
             {
